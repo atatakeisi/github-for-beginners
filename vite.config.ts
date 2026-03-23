@@ -152,11 +152,11 @@ function vitePluginManusDebugCollector(): Plugin {
 
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
-const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
-const githubPagesBase = process.env.GITHUB_ACTIONS === "true" && repositoryName ? `/${repositoryName}/` : "/";
+const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "github-for-beginners";
+const githubPagesBase = `/${repositoryName}/`;
 
-export default defineConfig({
-  base: githubPagesBase,
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? githubPagesBase : "/",
   plugins,
   resolve: {
     alias: {
@@ -189,4 +189,4 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-});
+}));
